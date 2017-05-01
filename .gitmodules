@@ -1,0 +1,9 @@
+[submodule "external/libpqxx"]
+	path = external/libpqxx
+	url = https://github.com/jtv/libpqxx.git
+[submodule "external/common"]
+	path = external/common
+	url = https://github.com/RealmOfAesir/common.git
+[submodule "external/librdkafka"]
+	path = external/librdkafka
+	url = https://github.com/edenhill/librdkafka.git
