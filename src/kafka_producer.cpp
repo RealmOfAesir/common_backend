@@ -159,7 +159,7 @@ int kafka_producer<UseJson>::poll(uint32_t ms_to_wait) {
 }
 
 template <bool UseJson>
-void kafka_producer<UseJson>::start(std::string broker_list, bool debug) {
+void kafka_producer<UseJson>::start(std::string broker_list, bool disable_nagle, bool debug) {
     auto conf = RdKafka::Conf::create(RdKafka::Conf::CONF_GLOBAL);
 
     std::string errstr;
@@ -191,7 +191,14 @@ void kafka_producer<UseJson>::start(std::string broker_list, bool debug) {
 
     if (conf->set("queue.buffering.max.ms", "100", errstr) != RdKafka::Conf::CONF_OK) {
         LOG(ERROR) << "[kafka_producer] queue.buffering.max.ms " << errstr;
-        throw kafka_exception("[kafka_producer] dr_cb");
+        throw kafka_exception("[kafka_producer] queue.buffering.max.ms");
+    }
+
+    if(disable_nagle) {
+        if (conf->set("socket.nagle.disable", "true", errstr) != RdKafka::Conf::CONF_OK) {
+            LOG(ERROR) << "[kafka_producer] socket.nagle.disable " << errstr;
+            throw kafka_exception("[kafka_producer] socket.nagle.disable");
+        }
     }
 
     if(debug) {
