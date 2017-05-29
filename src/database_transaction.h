@@ -49,7 +49,7 @@ namespace roa {
 
     class database_transaction : public idatabase_transaction {
     public:
-        database_transaction(std::shared_ptr<pqxx::connection> connection) noexcept;
+        explicit database_transaction(std::shared_ptr<pqxx::connection> connection) noexcept;
 
         ~database_transaction();
 

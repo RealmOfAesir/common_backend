@@ -33,17 +33,16 @@ namespace roa {
          * Non-thread safe function to create a transaction
          * @throws sql_transaction_already_created_exception if an transaction is already active
          */
-        virtual std::unique_ptr<idatabase_transaction> create_transaction() = 0;
+        virtual std::tuple<std::unique_ptr<idatabase_connection>, std::unique_ptr<idatabase_transaction>> create_transaction() = 0;
     };
 
     class repository : public irepository {
     public:
-        explicit repository(idatabase_pool& database_pool, std::unique_ptr<idatabase_connection> connection = nullptr);
+        explicit repository(idatabase_pool& database_pool);
         ~repository();
 
-        std::unique_ptr<idatabase_transaction> create_transaction() override;
+        std::tuple<std::unique_ptr<idatabase_connection>, std::unique_ptr<idatabase_transaction>> create_transaction() override;
     protected:
         idatabase_pool& _database_pool;
-        std::unique_ptr<idatabase_connection> _connection;
     };
 }

@@ -39,7 +39,7 @@ namespace roa {
 
     class database_connection : public idatabase_connection {
     public:
-        database_connection(database_pool* database_pool, std::tuple<uint32_t, std::shared_ptr<pqxx::connection>> connection) noexcept;
+        explicit database_connection(database_pool* database_pool, std::tuple<uint32_t, std::shared_ptr<pqxx::connection>> connection) noexcept;
 
         /**
          * Releases the connection upon destruction
