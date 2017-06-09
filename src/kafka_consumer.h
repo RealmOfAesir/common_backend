@@ -39,7 +39,7 @@ namespace roa {
          * @param topics list of topics to listen on
          * @param debug give more stdout info
          */
-        virtual void start(std::string broker_list, std::string group_id, std::vector<std::string> topics, bool debug = false) = 0;
+        virtual void start(std::string broker_list, std::string group_id, std::vector<std::string> topics, uint32_t fetch_wait_max_ms = 100, bool debug = false) = 0;
 
         /**
          * close the consumer, immediately stop try_get_message from working and wait a couple of seconds to process the queue
@@ -68,7 +68,7 @@ namespace roa {
 
         ~kafka_consumer();
 
-        void start(std::string broker_list, std::string group_id, std::vector<std::string> topics, bool debug = false) override;
+        void start(std::string broker_list, std::string group_id, std::vector<std::string> topics, uint32_t fetch_wait_max_ms = 100, bool debug = false) override;
         void close() override;
 
         std::tuple<uint32_t, std::unique_ptr<message<UseJson> const>> try_get_message(uint16_t ms_to_wait = 0) override;

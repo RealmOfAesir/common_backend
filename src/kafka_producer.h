@@ -57,7 +57,7 @@ namespace roa {
          * @param broker_list comma-separated list of FQDN hosts that run kafka
          * @param debug give more stdout info
          */
-        virtual void start(std::string broker_list, bool disable_nagle = true, bool debug = false) = 0;
+        virtual void start(std::string broker_list, uint32_t queue_buffering_max_ms = 100, bool disable_nagle = true, bool debug = false) = 0;
 
         /**
          * close the producer, immediately stop try_get_message from working and wait a couple of seconds to process the queue
@@ -102,7 +102,7 @@ namespace roa {
 
         ~kafka_producer();
 
-        void start(std::string broker_list, bool disable_nagle = true, bool debug = false) override;
+        void start(std::string broker_list, uint32_t queue_buffering_max_ms = 100, bool disable_nagle = true, bool debug = false) override;
         void close() override;
 
         void enqueue_message(std::string topic_str, message<UseJson> const &msg) override;

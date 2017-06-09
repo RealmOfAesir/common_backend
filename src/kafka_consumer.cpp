@@ -126,7 +126,7 @@ bool kafka_consumer<UseJson>::is_queue_empty() {
 }
 
 template <bool UseJson>
-void kafka_consumer<UseJson>::start(std::string broker_list, std::string group_id, std::vector<std::string> topics, bool debug) {
+void kafka_consumer<UseJson>::start(std::string broker_list, std::string group_id, std::vector<std::string> topics, uint32_t fetch_wait_max_ms, bool debug) {
     string errstr;
     RdKafka::Conf *conf = RdKafka::Conf::create(RdKafka::Conf::CONF_GLOBAL);
     RdKafka::Conf *topic_conf = RdKafka::Conf::create(RdKafka::Conf::CONF_TOPIC);
@@ -164,6 +164,16 @@ void kafka_consumer<UseJson>::start(std::string broker_list, std::string group_i
     if(conf->set("default_topic_conf", topic_conf, errstr) != RdKafka::Conf::CONF_OK) {
         LOG(ERROR) << "[kafka_consumer] default_topic_conf " << errstr;
         throw kafka_exception("[kafka_consumer] default_topic_conf");
+    }
+
+    if(conf->set("fetch.wait.max.ms", to_string(fetch_wait_max_ms), errstr) != RdKafka::Conf::CONF_OK) {
+        LOG(ERROR) << "[kafka_consumer] fetch.wait.max.ms " << errstr;
+        throw kafka_exception("[kafka_consumer] fetch.wait.max.ms");
+    }
+
+    if(conf->set("fetch.error.backoff.ms", "250", errstr) != RdKafka::Conf::CONF_OK) {
+        LOG(ERROR) << "[kafka_consumer] fetch.error.backoff.ms " << errstr;
+        throw kafka_exception("[kafka_consumer] fetch.error.backoff.ms");
     }
 
     /*if(conf->set("rebalance_cb", &ex_rebalance_cb, errstr) != RdKafka::Conf::CONF_OK) {
