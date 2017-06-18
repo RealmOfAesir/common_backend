@@ -38,11 +38,11 @@ namespace roa {
 
     class repository : public irepository {
     public:
-        explicit repository(idatabase_pool& database_pool);
+        explicit repository(std::shared_ptr<idatabase_pool> database_pool);
         ~repository();
 
         std::tuple<std::unique_ptr<idatabase_connection>, std::unique_ptr<idatabase_transaction>> create_transaction() override;
     protected:
-        idatabase_pool& _database_pool;
+        std::shared_ptr<idatabase_pool> _database_pool;
     };
 }

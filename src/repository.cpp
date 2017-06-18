@@ -27,7 +27,7 @@ using namespace std;
 using namespace roa;
 using namespace pqxx;
 
-repository::repository(idatabase_pool& database_pool)
+repository::repository(shared_ptr<idatabase_pool> database_pool)
         : _database_pool(database_pool) {
 
 }
@@ -37,7 +37,7 @@ repository::~repository() {
 }
 
 tuple<unique_ptr<idatabase_connection>, unique_ptr<idatabase_transaction>> repository::create_transaction()  {
-    auto connection = _database_pool.get_connection();
+    auto connection = _database_pool->get_connection();
     auto transaction = connection->create_transaction();
 
     return make_tuple(move(connection), move(transaction));
