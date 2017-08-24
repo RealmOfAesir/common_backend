@@ -42,3 +42,6 @@ target_link_libraries (RealmOfAesirCommonBackend PUBLIC ${CMAKE_THREAD_LIBS_INIT
 
 find_package(OpenSSL REQUIRED)
 target_link_libraries (RealmOfAesirCommonBackend PUBLIC ${OPENSSL_LIBRARIES})
+
+target_link_libraries (RealmOfAesirCommonBackend PUBLIC ${CMAKE_DL_LIBS})
+target_link_libraries (RealmOfAesirCommonBackend PUBLIC -llz4)
