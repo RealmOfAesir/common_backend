@@ -5,7 +5,7 @@ cd $DIR/external/common
 cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
 make -j$CPUS
 cd $DIR/external/libpqxx
-./configure --disable-documentation
+CXXFLAGS="-std=c++17 -O2" ./configure --disable-documentation
 make -j$CPUS
 cd $DIR/external/librdkafka
 ./configure
